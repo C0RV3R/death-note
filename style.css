@@ -1,12 +1,10 @@
 @font-face {
   font-family: 'DeathNote';
-  /* Font dosyasının yüklendiğinden emin olun, yoksa serif kullanılır */
   src: url('./Death_Note_Font_by_Karlibell22.ttf') format('truetype');
 }
 
 * { 
   box-sizing: border-box; 
-  /* Mobilde metin seçimi sürüklemeyi bozmasın diye: */
   user-select: none; 
   -webkit-user-select: none;
 }
@@ -24,15 +22,59 @@ body {
   font-family: sans-serif;
 }
 
-.instruction {
-  color: #666;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-  pointer-events: none; /* Tıklamayı engelleme */
+.start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+  transition: opacity 0.8s ease;
+}
+
+.start-content {
+  text-align: center;
+  color: #fff;
+  font-family: 'DeathNote', serif;
+  animation: pulse 2s infinite;
+}
+
+.start-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #fff;
+}
+
+.start-content p {
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  color: #aaa;
+}
+
+.tap-icon {
+  font-size: 2rem;
+  display: block;
+  margin-top: 20px;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .book-container {
-  width: 300px; /* Mobilde daha rahat sığması için biraz küçültüldü */
+  width: 300px;
   aspect-ratio: 2 / 3;
   perspective: 2000px;
 }
@@ -66,22 +108,21 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden; /* Arka yüzü gizle */
+  backface-visibility: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'DeathNote', 'Times New Roman', serif;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid #ccc; /* Sayfa sınırları belli olsun */
+  border: 1px solid #ccc;
 }
 
-/* --- ÖN KAPAK TASARIMI (Buraya Odaklandık) --- */
 .front-cover .front-side {
-  background-color: #000; /* Tamamen siyah */
+  background-color: #000;
   border: 2px solid #333;
-  color: #fff; /* Beyaz yazı */
-  z-index: 2; /* Ön yüzün arka yüzden üstte olduğundan emin olmak için */
+  color: #fff;
+  z-index: 2;
 }
 
 .front-cover .front-side h1 {
@@ -91,42 +132,37 @@ body {
   text-align: center;
   margin: 0;
   padding: 20px;
-  text-shadow: 0 0 10px #fff; /* Hafif parlama */
+  text-shadow: 0 0 10px #fff;
 }
 
-/* İç Kapaklar (Kapağın arkası) */
 .inside-cover {
   background: #222;
   border: none;
 }
 
-/* Normal Sayfalar */
 .page:not(.cover) .front-side {
-  background: #fdf8e2; /* Kağıt rengi */
+  background: #fdf8e2;
   border: none;
-  box-shadow: inset 3px 0 10px rgba(0,0,0,0.1); /* Cilt gölgesi */
+  box-shadow: inset 3px 0 10px rgba(0,0,0,0.1);
 }
 
 .page:not(.cover) .back-side {
   background: #f5eec2;
-  transform: rotateY(180deg); /* Arka yüzü ters çevir */
+  transform: rotateY(180deg);
   border: none;
   box-shadow: inset -3px 0 10px rgba(0,0,0,0.1);
 }
 
-/* Arka Kapak Arkası */
 .back-cover .back-side {
   background: #000;
   transform: rotateY(180deg);
   border: 2px solid #333;
 }
 
-/* Sayfa Çevrilme Durumu */
 .page.flipped {
   transform: rotateY(-180deg); 
 }
 
-/* İçerik Stilleri */
 .content {
   padding: 20px;
   width: 100%;
@@ -144,7 +180,6 @@ body {
 .name-entry h2 { font-size: 1.8rem; margin-bottom: 5px; }
 .name-entry p { font-size: 2rem; font-weight: bold; letter-spacing: 3px; }
 
-/* Mobil Düzenlemeler */
 @media (max-width: 600px) {
   .book-container { 
     width: 85vw;

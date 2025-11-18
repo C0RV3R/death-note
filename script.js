@@ -1,11 +1,34 @@
 const book = document.getElementById('book');
 const pages = Array.from(document.querySelectorAll('.page'));
+const startScreen = document.getElementById('start-screen');
 
+const entranceSound = new Audio('assets/sounds/enterance.mp3');
 const pageSound = new Audio('assets/sounds/page.mp3');
+
+pageSound.preload = 'auto'; 
+entranceSound.preload = 'auto';
+
+function handleStartInteraction() {
+    entranceSound.volume = 1.0; 
+    entranceSound.play().catch(e => console.log("Giriş sesi hatası:", e));
+
+    pageSound.play().then(() => {
+        pageSound.pause();
+        pageSound.currentTime = 0;
+    }).catch(e => {});
+
+    startScreen.classList.add('hidden');
+    setTimeout(() => {
+        startScreen.style.display = 'none';
+    }, 800);
+}
+
+startScreen.addEventListener('click', handleStartInteraction);
+startScreen.addEventListener('touchstart', handleStartInteraction, { passive: true });
 
 function playPageSound() {
     pageSound.currentTime = 0;
-    pageSound.play().catch(error => console.log("Ses çalınamadı (Tarayıcı izni gerekebilir):", error));
+    pageSound.play().catch(e => {});
 }
 
 let current = 0; 
@@ -31,10 +54,9 @@ function updateZIndexes() {
 function nextPage() {
   if (isAnimating || current >= pages.length) return; 
   
-  isAnimating = true;
-  
   playPageSound();
-
+  
+  isAnimating = true;
   const page = pages[current];
   page.style.zIndex = 100; 
   page.classList.add('flipped');
@@ -50,10 +72,9 @@ function nextPage() {
 function prevPage() {
   if (isAnimating || current <= 0) return; 
   
-  isAnimating = true;
-
   playPageSound();
   
+  isAnimating = true;
   current--; 
   const page = pages[current];
   
@@ -66,7 +87,6 @@ function prevPage() {
   }, { once: true });
 }
 
-
 function getClientX(e) {
   return e.touches ? e.touches[0].clientX : e.clientX;
 }
@@ -76,8 +96,6 @@ function dragStart(e) {
   isDragging = true;
   startX = getClientX(e);
   book.style.cursor = 'grabbing';
-  if (e.type === 'touchstart') {
-  }
 }
 
 function dragMove(e) {
